@@ -1,10 +1,15 @@
 package twitter.infrastructure;
 
+import twitter.Tweet;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ApplicationContext implements Context {
 
@@ -53,7 +58,7 @@ public class ApplicationContext implements Context {
 
             beanStore.put(beanName, bean);
             //callInitMethod(bean);
-            callAnnotatedBean(bean);
+            //callAnnotatedBean(bean);
         }
 
         return bean;
@@ -62,12 +67,32 @@ public class ApplicationContext implements Context {
     private <T> T createProxy(T bean) {
         T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
                 bean.getClass().getInterfaces(),
-                new InvocationHandler() {
-                    @Override
-                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        return null;
-                    }
+                (proxy, method, args) -> {
+                    System.out.println("proxy enter for method " + method.getName());
+                    System.out.println("proxy exit for method " + method.getName());
+                    System.out.println(method.getName());
+                    return method.invoke(bean, args);
                 });
+
+
+       /* T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
+                bean.getClass().getInterfaces(),
+                (proxy, method, args) -> {
+                    System.out.println("proxy enter for method " + method.getName());
+                    System.out.println("proxy exit for method " + method.getName());
+                    String metName = method.getName();
+//                    System.out.println(metName);
+//                    System.out.println(bean.getClass().getMethod(method.getName()));
+//                    System.out.println(bean.getClass().getMethods()[1]);
+                    String[] realargs = Arrays.stream(args)
+                            .map(e -> e.getClass().getName())
+                            .collect(Collectors.toList())
+                            .toArray(new String[args.length]);
+                    System.out.println("Real args: "+ realargs.toString());
+
+//                    System.out.println(bean.getClass().getMethod(metName, null));
+                    return method.invoke(bean, args);
+                });*/
 
         return newBean;
     }
@@ -88,18 +113,15 @@ public class ApplicationContext implements Context {
 
     private void callInitMethod(Object bean) {
         Class<?> clazz = bean.getClass();
-        Method method;
-
-        try {
-            method = clazz.getMethod("init");
-            if (method != null) {
-                method.invoke(bean);
+        Optional<Method> initMethod = Arrays.stream(clazz.getMethods())
+                .filter(m -> "init".equals(m.getName()))
+                .findFirst();
+        initMethod.ifPresent(m -> {
+            try {
+                m.invoke(bean);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
             }
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        });
     }
-
-
-
 }

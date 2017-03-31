@@ -3,6 +3,7 @@ package twitter.repository;
 
 import twitter.Tweet;
 import twitter.infrastructure.Benchmark;
+import twitter.infrastructure.PostConstructAnnotation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,5 +21,14 @@ public class TweetRepositoryImpl implements TweetRepository {
     @Benchmark(value = true)
     public List<Tweet> findAll() {
         return new ArrayList<>(tweetRepo);
+    }
+
+    public void init(){
+        System.out.println("TweetRepositoryImpl: init() called.");
+    }
+
+    @PostConstructAnnotation
+    public void postConstructMethod(){
+        System.out.println("postConstructMethod() called over annotation '@PostConstructAnnotation'");
     }
 }
