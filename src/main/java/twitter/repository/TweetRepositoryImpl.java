@@ -13,6 +13,7 @@ public class TweetRepositoryImpl implements TweetRepository {
     private List<Tweet> tweetRepo = new ArrayList<>();
 
     @Override
+    @Benchmark
     public void save(Tweet tweet) {
         tweetRepo.add(tweet);
     }

@@ -6,9 +6,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 public class ApplicationContext implements Context {
@@ -53,48 +57,70 @@ public class ApplicationContext implements Context {
                 throw new RuntimeException("Bean not found");
             }
             bean = (T) clazz.newInstance();
+            callInitMethod(bean);
+            callAnnotatedBean(bean);
 
             bean = createProxy(bean);
-
             beanStore.put(beanName, bean);
-            //callInitMethod(bean);
-            //callAnnotatedBean(bean);
         }
-
         return bean;
     }
 
     private <T> T createProxy(T bean) {
-        T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
+
+        /*T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
                 bean.getClass().getInterfaces(),
                 (proxy, method, args) -> {
-                    System.out.println("proxy enter for method " + method.getName());
-                    System.out.println("proxy exit for method " + method.getName());
-                    System.out.println(method.getName());
-                    return method.invoke(bean, args);
-                });
-
-
-       /* T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
-                bean.getClass().getInterfaces(),
-                (proxy, method, args) -> {
-                    System.out.println("proxy enter for method " + method.getName());
-                    System.out.println("proxy exit for method " + method.getName());
-                    String metName = method.getName();
-//                    System.out.println(metName);
-//                    System.out.println(bean.getClass().getMethod(method.getName()));
-//                    System.out.println(bean.getClass().getMethods()[1]);
-                    String[] realargs = Arrays.stream(args)
-                            .map(e -> e.getClass().getName())
-                            .collect(Collectors.toList())
-                            .toArray(new String[args.length]);
-                    System.out.println("Real args: "+ realargs.toString());
-
-//                    System.out.println(bean.getClass().getMethod(metName, null));
-                    return method.invoke(bean, args);
+                    T result = null;
+                    String methodName = method.getName();
+                    Method[] metods = bean.getClass().getMethods();
+                    for (Method m : metods) {
+                        if (m.getName().equals(methodName) && m.isAnnotationPresent(Benchmark.class) && m.getAnnotation(Benchmark.class).value()) {
+                            System.out.println("Benchmark  annotation found and it is 'true'");
+                            long start = System.nanoTime();
+                            result = (T) method.invoke(bean, args);
+                            long difference = System.nanoTime() - start;
+                            System.out.format("Method %s executed during %f seconds.\n", methodName, difference / 1.0E+9);
+                            break;
+                        }
+                    }
+                    return result;
                 });*/
 
+        T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
+                bean.getClass().getInterfaces(),
+                (proxy, method, args) -> benchmarkMethod(bean, method, args)
+                );
         return newBean;
+    }
+
+    private <T> T benchmarkMethod(T bean, Method method, Object[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        T result;
+        String methodName = method.getName();
+        System.out.println(methodName + "()");
+        Class<?>[] argsTypes = getClassesArray(args);
+        Method checkedMethod = bean.getClass().getMethod(methodName, argsTypes);
+
+        if (checkedMethod.isAnnotationPresent(Benchmark.class) && checkedMethod.getAnnotation(Benchmark.class).value()) {
+            System.out.println("'Benchmark' annotation found and it is 'true'");
+            long start = System.nanoTime();
+            result = (T) method.invoke(bean, args);
+            long difference = System.nanoTime() - start;
+            System.out.format("Method %s executed during %f seconds.\n", methodName, difference / 1.0E+9);
+        } else {
+            result = (T) method.invoke(bean, args);
+        }
+        return result;
+    }
+
+    private Class<?>[] getClassesArray(Object[] args) {
+        Class<?>[] argsTypes = null;
+        if (args != null) {
+            argsTypes = Arrays.stream(args)
+                    .map(e -> e.getClass())
+                    .toArray(e -> new Class<?>[args.length]);
+        }
+        return argsTypes;
     }
 
     private void callAnnotatedBean(Object bean) {
