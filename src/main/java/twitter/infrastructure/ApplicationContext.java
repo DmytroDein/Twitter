@@ -2,10 +2,7 @@ package twitter.infrastructure;
 
 import twitter.Tweet;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,9 +21,10 @@ public class ApplicationContext implements Context {
         this.config = config;
     }
 
+    //Before Services - works!
     @Override
     public <T> T getBean(String beanName) throws Exception {
-       /* T bean = (T)( beanStore.get(beanName));
+        /*T bean = (T)( beanStore.get(beanName));
         if (bean != null) {
             Class<?> clazz = config.getImpl(beanName);
             if (clazz == null) {
@@ -34,9 +32,9 @@ public class ApplicationContext implements Context {
             }
             bean = (T) clazz.newInstance();
             beanStore.put(beanName, bean);
-        }*/
+        }
 
-       /*T bean = null;
+       T bean = null;
         if (beanStore.containsKey(beanName)){
             bean = (T)(beanStore.get(beanName));
         } else {
@@ -48,7 +46,7 @@ public class ApplicationContext implements Context {
             beanStore.put(beanName, bean);
         }*/
 
-        T bean = null;
+        /*T bean = null;
         if (beanStore.containsKey(beanName)){
             bean = (T)(beanStore.get(beanName));
         } else {
@@ -63,12 +61,69 @@ public class ApplicationContext implements Context {
             bean = createProxy(bean);
             beanStore.put(beanName, bean);
         }
+        return bean;*/
+
+        T bean = (T) beanStore.get(beanName);
+        if (bean != null) {
+            return bean;
+        }
+        Class<?> clazz = config.getImpl(beanName);
+        if (clazz == null) {
+            throw new RuntimeException("Bean not found");
+        }
+
+        BeanBuilder beanBuilder = new BeanBuilder(clazz);
+        beanBuilder.callInitMethod();
+        beanBuilder.callAnnotatedBean();
+        beanBuilder.createProxy();
+        bean = (T) beanBuilder.build();
         return bean;
+
     }
 
-    private <T> T createProxy(T bean) {
+   /* @Override
+    public <T> T getBean(String beanName) throws Exception {
 
-        /*T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
+        T bean = null;
+        if (beanStore.containsKey(beanName)){
+            bean = (T)(beanStore.get(beanName));
+        } else {
+            Class<?> clazz = config.getImpl(beanName);
+            if (clazz == null) {
+                throw new RuntimeException("Bean not found");
+            }
+            Constructor constructor = clazz.getConstructors()[0];
+            Class[] parameterTypes = constructor.getParameterTypes();
+            String[] parameters = new String[]{parameterTypes.length};
+            for (int i = 0; i < parameterTypes.length; i++){
+
+
+            }
+
+            Object[] parClasses = null;
+            if (parameters != null){
+                parClasses = new Class<?>[parameters.length];
+                for (int i = 0; i < parameters.length; i++){
+                    parClasses[i] = getBean(parameters[i]);
+                }
+            }
+
+            //Constructor constructor = clazz.getConstructor(getClassesArray(parClasses));
+            bean = (T)constructor.newInstance(parClasses);
+
+            //bean = (T) clazz.newInstance();
+            callInitMethod(bean);
+            callAnnotatedBean(bean);
+
+            bean = createProxy(bean);
+            beanStore.put(beanName, bean);
+        }
+        return bean;
+    }*/
+
+    /*private <T> T createProxy(T bean) {
+
+        *//*T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
                 bean.getClass().getInterfaces(),
                 (proxy, method, args) -> {
                     T result = null;
@@ -85,16 +140,16 @@ public class ApplicationContext implements Context {
                         }
                     }
                     return result;
-                });*/
+                });*//*
 
         T newBean = (T)Proxy.newProxyInstance(bean.getClass().getClassLoader(),
                 bean.getClass().getInterfaces(),
                 (proxy, method, args) -> benchmarkMethod(bean, method, args)
                 );
         return newBean;
-    }
+    }*/
 
-    private <T> T benchmarkMethod(T bean, Method method, Object[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    /*private <T> T benchmarkMethod(T bean, Method method, Object[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         T result;
         String methodName = method.getName();
         System.out.println(methodName + "()");
@@ -121,9 +176,9 @@ public class ApplicationContext implements Context {
                     .toArray(e -> new Class<?>[args.length]);
         }
         return argsTypes;
-    }
+    }*/
 
-    private void callAnnotatedBean(Object bean) {
+    /*private void callAnnotatedBean(Object bean) {
         Class<?> clazz = bean.getClass();
         Method[] methods = clazz.getMethods();
         for (Method m : methods) {
@@ -149,5 +204,5 @@ public class ApplicationContext implements Context {
                 e.printStackTrace();
             }
         });
-    }
+    }*/
 }

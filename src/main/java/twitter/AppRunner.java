@@ -4,6 +4,7 @@ package twitter;
 import twitter.infrastructure.*;
 import twitter.repository.TweetRepository;
 import twitter.repository.TweetRepositoryImpl;
+import twitter.services.TweetService;
 
 public class AppRunner {
     public static void main(String[] args) throws Exception {
@@ -37,5 +38,18 @@ public class AppRunner {
         repository.findAll().forEach(System.out::println);
 
         System.out.println("Done!");
+//--------------- Services work ------------------------------------------------------------
+        /*Config config = new JavaConfig();
+        Context context = new ApplicationContext(config);
+        TweetRepository repository = context.getBean("TweetRepo");
+        TweetService tweetService = context.getBean("TweetService");
+
+        User user = new User("Douglas");
+        repository.save(new Tweet(user, "Some text №1!"));
+        repository.save(new Tweet(user, "Some text №2!"));
+        repository.save(new Tweet(user, "Some text №3!"));
+
+        tweetService.findAll().forEach(System.out::println);
+        System.out.println("Done!");*/
     }
 }
