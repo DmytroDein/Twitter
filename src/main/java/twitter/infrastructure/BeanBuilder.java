@@ -1,13 +1,14 @@
 package twitter.infrastructure;
 
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class BeanBuilder<T> {
+/*public class BeanBuilder<T> {
 
     private final Class<?> clazz;
     private T bean;
@@ -15,12 +16,55 @@ public class BeanBuilder<T> {
 
     public BeanBuilder(Class<?> clazz) {
         this.clazz = clazz;
-        try {
+
+        *//*try {
             bean = (T) clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
+        }*//*
+
+        try {
+            bean = getBeanByClass(clazz);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+    public T getBeanByClass(Class<?> clazz) throws Exception {
+
+        Constructor constructor = clazz.getConstructors()[0];
+
+        if (constructor.getParameterCount() == 0){
+            bean = (T) clazz.newInstance();
+            return bean;
+        }
+
+        Class<?>[] constrParTypes = constructor.getParameterTypes();
+
+        Object[] constrParameters = new Object[constrParTypes.length];
+        for (int i = 0; i < constrParTypes.length; i++){
+            //String originalClassName = constrParTypes[i].getSimpleName();
+//            constrParameters[i] = getBeanByClass(constrParTypes[i]);
+            BeanBuilder parameterBeanBuilder = new BeanBuilder(constrParTypes[i]);
+            //parameterBeanBuilder.callInitMethod();
+            //parameterBeanBuilder.callAnnotatedBean();
+            //parameterBeanBuilder.createProxy();
+            constrParameters[i] = parameterBeanBuilder.build();
+        }
+
+        bean = (T)constructor.newInstance(constrParameters);
+
+
+        //callInitMethod();
+        //callAnnotatedBean();
+        //createProxy();
+        return bean;
+    }
+
+    private String unCapitalize(String originalClassName) {
+        return Character.toLowerCase(originalClassName.charAt(0)) + originalClassName.substring(1);
+    }
+
 
     public void callInitMethod() {
         Class<?> clazz = bean.getClass();
@@ -94,4 +138,8 @@ public class BeanBuilder<T> {
         }
         return argsTypes;
     }
-}
+
+    public T getOriginalBean() {
+        return bean;
+    }
+}*/

@@ -13,7 +13,7 @@ public class JavaConfig implements Config {
     private final Map<String, Class<?>> classes = new HashMap<>();
 
     {
-        classes.put("tweetRepositoryImpl", TweetRepositoryImpl.class);
+        classes.put("tweetRepository", TweetRepositoryImpl.class);
         classes.put("tweetService", TweetServiceImpl.class);
 //        classes.put("user", User.class);
     }

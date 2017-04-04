@@ -30,7 +30,7 @@ public class AppRunner {
 //---------------------------------------------------------------------------
        /* Config config = new JavaConfig();
         Context context = new ApplicationContext(config);
-        TweetRepository repository = context.getBean("TweetRepo");
+        TweetRepository repository = context.getBeanByClass("TweetRepo");
         User user = new User("Douglas");
         repository.save(new Tweet(user, "Some text №1!"));
         repository.save(new Tweet(user, "Some text №2!"));
@@ -41,7 +41,7 @@ public class AppRunner {
 //--------------- Services work ------------------------------------------------------------
         Config config = new JavaConfig();
         Context context = new ApplicationContext(config);
-        //TweetRepository repository = context.getBean("TweetRepositoryImpl");
+        //TweetRepository repository = context.getBeanByClass("TweetRepositoryImpl");
         TweetService tweetService = context.getBean("tweetService");
 
         User user = new User("Douglas");
