@@ -11,14 +11,11 @@ import java.util.Map;
 public class JavaConfig implements Config {
 
     private final Map<String, Class<?>> classes = new HashMap<>();
-    private final Map<String, String[]> beansConstructorParameters = new HashMap<>();
 
     {
-        classes.put("TweetRepo", TweetRepositoryImpl.class);
-        classes.put("User", User.class);
-        beansConstructorParameters.put("User", new String[]{"String"});
-        classes.put("TweetService", TweetServiceImpl.class);
-        beansConstructorParameters.put("TweetService", new String[]{"TweetServiceImpl"});
+        classes.put("tweetRepositoryImpl", TweetRepositoryImpl.class);
+        classes.put("tweetService", TweetServiceImpl.class);
+//        classes.put("user", User.class);
     }
 
     @Override
@@ -26,8 +23,8 @@ public class JavaConfig implements Config {
         return classes.get(name);
     }
 
-    @Override
+    /*@Override
     public String[] getImplParameters(String name) {
         return beansConstructorParameters.get(name);
-    }
+    }*/
 }

@@ -28,7 +28,7 @@ public class AppRunner {
         repository.save(new Tweet(user, "Some text №2!"));
         repository.findAll().forEach(System.out::println);*/
 //---------------------------------------------------------------------------
-        Config config = new JavaConfig();
+       /* Config config = new JavaConfig();
         Context context = new ApplicationContext(config);
         TweetRepository repository = context.getBean("TweetRepo");
         User user = new User("Douglas");
@@ -37,19 +37,19 @@ public class AppRunner {
         repository.save(new Tweet(user, "Some text №3!"));
         repository.findAll().forEach(System.out::println);
 
-        System.out.println("Done!");
+        System.out.println("Done!");*/
 //--------------- Services work ------------------------------------------------------------
-        /*Config config = new JavaConfig();
+        Config config = new JavaConfig();
         Context context = new ApplicationContext(config);
-        TweetRepository repository = context.getBean("TweetRepo");
-        TweetService tweetService = context.getBean("TweetService");
+        //TweetRepository repository = context.getBean("TweetRepositoryImpl");
+        TweetService tweetService = context.getBean("tweetService");
 
         User user = new User("Douglas");
-        repository.save(new Tweet(user, "Some text №1!"));
-        repository.save(new Tweet(user, "Some text №2!"));
-        repository.save(new Tweet(user, "Some text №3!"));
+        tweetService.addTweet(new Tweet(user, "Some text №1!"));
+        tweetService.addTweet(new Tweet(user, "Some text №2!"));
+        tweetService.addTweet(new Tweet(user, "Some text №3!"));
 
         tweetService.findAll().forEach(System.out::println);
-        System.out.println("Done!");*/
+        System.out.println("Done!");
     }
 }

@@ -22,9 +22,9 @@ public class ApplicationContext implements Context {
     }
 
     //Before Services - works!
-    @Override
+    /*@Override
     public <T> T getBean(String beanName) throws Exception {
-        /*T bean = (T)( beanStore.get(beanName));
+        *//*T bean = (T)( beanStore.get(beanName));
         if (bean != null) {
             Class<?> clazz = config.getImpl(beanName);
             if (clazz == null) {
@@ -44,9 +44,9 @@ public class ApplicationContext implements Context {
             }
             bean = (T) clazz.newInstance();
             beanStore.put(beanName, bean);
-        }*/
+        }*//*
 
-        /*T bean = null;
+        *//*T bean = null;
         if (beanStore.containsKey(beanName)){
             bean = (T)(beanStore.get(beanName));
         } else {
@@ -61,7 +61,7 @@ public class ApplicationContext implements Context {
             bean = createProxy(bean);
             beanStore.put(beanName, bean);
         }
-        return bean;*/
+        return bean;*//*
 
         T bean = (T) beanStore.get(beanName);
         if (bean != null) {
@@ -79,47 +79,50 @@ public class ApplicationContext implements Context {
         bean = (T) beanBuilder.build();
         return bean;
 
-    }
+    }*/
 
-   /* @Override
+    @Override
     public <T> T getBean(String beanName) throws Exception {
 
-        T bean = null;
-        if (beanStore.containsKey(beanName)){
-            bean = (T)(beanStore.get(beanName));
-        } else {
-            Class<?> clazz = config.getImpl(beanName);
-            if (clazz == null) {
-                throw new RuntimeException("Bean not found");
-            }
-            Constructor constructor = clazz.getConstructors()[0];
-            Class[] parameterTypes = constructor.getParameterTypes();
-            String[] parameters = new String[]{parameterTypes.length};
-            for (int i = 0; i < parameterTypes.length; i++){
-
-
-            }
-
-            Object[] parClasses = null;
-            if (parameters != null){
-                parClasses = new Class<?>[parameters.length];
-                for (int i = 0; i < parameters.length; i++){
-                    parClasses[i] = getBean(parameters[i]);
-                }
-            }
-
-            //Constructor constructor = clazz.getConstructor(getClassesArray(parClasses));
-            bean = (T)constructor.newInstance(parClasses);
-
-            //bean = (T) clazz.newInstance();
-            callInitMethod(bean);
-            callAnnotatedBean(bean);
-
-            bean = createProxy(bean);
-            beanStore.put(beanName, bean);
+        T bean = (T) beanStore.get(beanName);
+        if (bean != null) {
+            return bean;
         }
+        Class<?> clazz = config.getImpl(beanName);
+        if (clazz == null) {
+            throw new RuntimeException("Bean not found");
+        }
+
+        Constructor constructor = clazz.getConstructors()[0];
+
+        if (constructor.getParameterCount() == 0){
+            bean = (T) clazz.newInstance();
+            return bean;
+        }
+
+        Class<?>[] constrParTypes = constructor.getParameterTypes();
+
+        Object[] constrParameters = new Object[constrParTypes.length];
+        for (int i = 0; i < constrParTypes.length; i++){
+            String originalClassName = constrParTypes[i].getSimpleName();
+            constrParameters[i] = getBean(unCapitalize(originalClassName));
+        }
+
+        bean = (T)constructor.newInstance(constrParameters);
+
+
+        //callInitMethod(bean);
+        //callAnnotatedBean(bean);
+
+        //bean = createProxy(bean);
+        beanStore.put(beanName, bean);
+
         return bean;
-    }*/
+    }
+
+    private String unCapitalize(String originalClassName) {
+        return Character.toLowerCase(originalClassName.charAt(0)) + originalClassName.substring(1);
+    }
 
     /*private <T> T createProxy(T bean) {
 
