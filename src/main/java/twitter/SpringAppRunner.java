@@ -5,40 +5,55 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import twitter.infrastructure.Temp;
 import twitter.repository.TweetRepository;
+import twitter.services.TweetService;
 
 import java.util.Arrays;
 
 public class SpringAppRunner {
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"spring.xml"}, true);
-        TweetRepository repository = (TweetRepository) ctx.getBean("TweeterRepository");
+        ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring.xml"}, true);
+        TweetRepository repository = (TweetRepository) context.getBean("TweeterRepository");
 
-        ConfigurableApplicationContext ctx2 = new ClassPathXmlApplicationContext(new String[]{"service.xml"}, ctx);
+        ConfigurableApplicationContext childContext = new ClassPathXmlApplicationContext(new String[]{"service.xml"}, context);
 
-        User user = new User("Douglas");
+        /*User user = new User("Douglas");
         repository.save(new Tweet(user, "Some text №1!"));
         repository.save(new Tweet(user, "Some text №2!"));
         repository.save(new Tweet(user, "Some text №3!"));
-        repository.findAll().forEach(System.out::println);
+        repository.findAll().forEach(System.out::println);*/
 
-        System.out.println("-------------CTX-----------");
-        System.out.println(Arrays.toString(ctx.getBeanDefinitionNames()));
+        TweetService tweetService = (TweetService)childContext.getBean("TweetService");
+        User user = new User("Douglas");
+        tweetService.addTweet(new Tweet(user, "Some text №1!"));
+        tweetService.addTweet(new Tweet(user, "Some text №2!"));
+        tweetService.addTweet(new Tweet(user, "Some text №3!"));
+        tweetService.findAll().forEach(System.out::println);
 
-        System.out.println("-------------CTX2-----------");
-        System.out.println(Arrays.toString(ctx2.getBeanDefinitionNames()));
-        
+        System.out.println("------------- context -----------");
+        System.out.println(Arrays.toString(context.getBeanDefinitionNames()));
 
-        BeanDefinition beanDefinition = ctx.getBeanFactory().getBeanDefinition("TweeterRepository");
-        System.out.println("----------- ctx ------------");
+        System.out.println("------------- childContext -----------");
+        System.out.println(Arrays.toString(childContext.getBeanDefinitionNames()));
+
+        BeanDefinition beanDefinition = context.getBeanFactory().getBeanDefinition("TweeterRepository");
+        System.out.println("----------- context ------------");
         System.out.println(beanDefinition);
 
         beanDefinition.setScope("prototype");
         //ctx.refresh();
-        beanDefinition = ctx.getBeanFactory().getBeanDefinition("TweeterRepository");
+        beanDefinition = context.getBeanFactory().getBeanDefinition("TweeterRepository");
         System.out.println(beanDefinition);
 
-        ctx.close();
+        /*Temp temp = (Temp)ctx2.getBean("temp");
+
+        System.out.println("-------------CTX2-----------");
+        System.out.println(Arrays.toString(ctx2.getBeanDefinitionNames()));
+
+        System.out.println(ctx2.getBeanFactory().getBeanDefinition("tempable"));*/
+
+        context.close();
 
     }
 }

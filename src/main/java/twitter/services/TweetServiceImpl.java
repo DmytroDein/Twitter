@@ -1,16 +1,21 @@
 package twitter.services;
 
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import twitter.Tweet;
+import twitter.User;
 import twitter.infrastructure.Benchmark;
 import twitter.repository.TweetRepository;
 import twitter.repository.TweetRepositoryImpl;
 
 import java.util.List;
 
-public class TweetServiceImpl implements TweetService {
+public class TweetServiceImpl implements TweetService, ApplicationContextAware{
 
     private final TweetRepository tweetRepository;
+    ApplicationContext serviceContext;
 
     public TweetServiceImpl(TweetRepository tweetRepository) {
         this.tweetRepository = tweetRepository;
@@ -26,5 +31,22 @@ public class TweetServiceImpl implements TweetService {
     @Benchmark(value = true)
     public void addTweet(Tweet tweet) {
         tweetRepository.save(tweet);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.serviceContext = applicationContext;
+    }
+
+    public Tweet createTweet(String tweetText, User user){
+        Tweet tweet = createNewTweet();
+        tweet.setUser(user);
+        tweet.setText(tweetText);
+        return tweet;
+    }
+
+    private Tweet createNewTweet() {
+//        throw new UnsupportedOperationException();
+        return (Tweet) serviceContext.getBean("tweet");
     }
 }

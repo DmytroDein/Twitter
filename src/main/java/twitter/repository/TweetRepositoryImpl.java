@@ -1,7 +1,9 @@
 package twitter.repository;
 
 
+import org.springframework.context.ApplicationContext;
 import twitter.Tweet;
+import twitter.User;
 import twitter.infrastructure.Benchmark;
 import twitter.infrastructure.PostConstructAnnotation;
 
@@ -32,4 +34,5 @@ public class TweetRepositoryImpl implements TweetRepository {
     public void postConstructMethod(){
         System.out.println("postConstructMethod() called over annotation '@PostConstructAnnotation'");
     }
+
 }
