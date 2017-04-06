@@ -7,6 +7,10 @@
 
     <bean id = "TweeterRepository" class = "twitter.repository.TweetRepositoryImpl" init-method="init" />
 
+    <bean id="User" class="twitter.User">
+       <constructor-arg value="Douglas"/>
+    </bean>
+
     <!--<bean name="temp" class="twitter.infrastructure.MyFactoryBean" />-->
 
 

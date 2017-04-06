@@ -25,7 +25,8 @@ public class SpringAppRunner {
         repository.findAll().forEach(System.out::println);*/
 
         TweetService tweetService = (TweetService)childContext.getBean("TweetService");
-        User user = new User("Douglas");
+//        User user = new User("Douglas");
+        User user = (User) childContext.getBean("User");
         tweetService.addTweet(new Tweet(user, "Some text №1!"));
         tweetService.addTweet(new Tweet(user, "Some text №2!"));
         tweetService.addTweet(new Tweet(user, "Some text №3!"));
