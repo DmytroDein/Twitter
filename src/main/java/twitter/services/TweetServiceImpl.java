@@ -2,6 +2,8 @@ package twitter.services;
 
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import twitter.Tweet;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class TweetServiceImpl implements TweetService, ApplicationContextAware{
 
+    @Autowired
     private final TweetRepository tweetRepository;
     ApplicationContext serviceContext;
 
@@ -48,5 +51,10 @@ public class TweetServiceImpl implements TweetService, ApplicationContextAware{
     private Tweet createNewTweet() {
 //        throw new UnsupportedOperationException();
         return (Tweet) serviceContext.getBean("tweet");
+    }
+
+    @Lookup("Tweet")
+    public Tweet creatEmptyTweet(){
+        return null;
     }
 }

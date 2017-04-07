@@ -38,14 +38,14 @@ public class SpringAppRunner {
         System.out.println("------------- childContext -----------");
         System.out.println(Arrays.toString(childContext.getBeanDefinitionNames()));
 
-        BeanDefinition beanDefinition = context.getBeanFactory().getBeanDefinition("TweeterRepository");
+        /*BeanDefinition beanDefinition = context.getBeanFactory().getBeanDefinition("TweeterRepository");
         System.out.println("----------- context ------------");
         System.out.println(beanDefinition);
 
         beanDefinition.setScope("prototype");
         //ctx.refresh();
         beanDefinition = context.getBeanFactory().getBeanDefinition("TweeterRepository");
-        System.out.println(beanDefinition);
+        System.out.println(beanDefinition);*/
 
         /*Temp temp = (Temp)ctx2.getBean("temp");
 
@@ -53,6 +53,8 @@ public class SpringAppRunner {
         System.out.println(Arrays.toString(ctx2.getBeanDefinitionNames()));
 
         System.out.println(ctx2.getBeanFactory().getBeanDefinition("tempable"));*/
+
+        Tweet tweet = tweetService.creatEmptyTweet();
 
         context.close();
 

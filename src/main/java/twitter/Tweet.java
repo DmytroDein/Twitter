@@ -8,6 +8,9 @@ public class Tweet {
     private User user;
     private String text;
 
+    public Tweet() {
+    }
+
     public Tweet(User user, String text) {
         this.user = user;
         this.text = text;
