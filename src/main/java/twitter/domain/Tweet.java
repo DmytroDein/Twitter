@@ -1,8 +1,12 @@
 package twitter.domain;
 
-/**
- * Created by Dmytro_Deinichenko on 3/30/2017.
- */
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
+@Lazy
 public class Tweet {
 
     private User user;

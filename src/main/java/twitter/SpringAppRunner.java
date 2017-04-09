@@ -13,22 +13,32 @@ import java.util.Arrays;
 public class SpringAppRunner {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring.xml"}, true);
-        TweetRepository repository = (TweetRepository) context.getBean("TweeterRepository");
-
         ConfigurableApplicationContext childContext = new ClassPathXmlApplicationContext(new String[]{"service.xml"}, context);
 
-        /*User user = new User("Douglas");
-        repository.save(new Tweet(user, "Some text №1!"));
-        repository.save(new Tweet(user, "Some text №2!"));
-        repository.save(new Tweet(user, "Some text №3!"));
-        repository.findAll().forEach(System.out::println);*/
-
-        TweetService tweetService = (TweetService)childContext.getBean("TweetService");
+        TweetService tweetService = (TweetService)childContext.getBean("tweetService");
 //        User user = new User("Douglas");
-        User user = (User) childContext.getBean("User");
-        tweetService.addTweet(new Tweet(user, "Some text №1!"));
-        tweetService.addTweet(new Tweet(user, "Some text №2!"));
-        tweetService.addTweet(new Tweet(user, "Some text №3!"));
+        User user1 = (User) childContext.getBean("user", "Douglas");
+//        Tweet tweetFromUser1 = (Tweet) childContext.getBean("tweet", user1, "Some text #1 from user1!" );
+        Tweet tweetFromUser1 = tweetService.createTweet(user1, "Some text #1 from user1!" );
+        tweetService.addTweet(tweetFromUser1);
+//        tweetFromUser1 = (Tweet) childContext.getBean("tweet", user1, "Some text #2 from user1!" );
+        tweetFromUser1 = tweetService.createTweet(user1, "Some text #2 from user1!" );
+        tweetService.addTweet(tweetFromUser1);
+//        tweetFromUser1 = (Tweet) childContext.getBean("tweet", user1, "Some text #3 from user1!" );
+        tweetFromUser1 = tweetService.createTweet(user1, "Some text #3 from user1!" );
+        tweetService.addTweet(tweetFromUser1);
+
+        User user2 = (User) childContext.getBean("user", "Michael");
+//        Tweet tweetFromUser2 = (Tweet) childContext.getBean("tweet", user2, "Some text #1 from user2!" );
+        Tweet tweetFromUser2 = tweetService.createTweet(user2, "Some text #1 from user2!" );
+        tweetService.addTweet(tweetFromUser2);
+//        tweetFromUser2 = (Tweet) childContext.getBean("tweet", user2, "Some text #2 from user2!" );
+        tweetFromUser2 = tweetService.createTweet(user2, "Some text #2 from user2!" );
+        tweetService.addTweet(tweetFromUser2);
+//        tweetFromUser2 = (Tweet) childContext.getBean("tweet", user2, "Some text #3 from user2!" );
+        tweetFromUser2 = tweetService.createTweet(user2, "Some text #3 from user2!" );
+        tweetService.addTweet(tweetFromUser2);
+
         tweetService.findAll().forEach(System.out::println);
 
         System.out.println("------------- context -----------");
@@ -53,7 +63,7 @@ public class SpringAppRunner {
 
         System.out.println(ctx2.getBeanFactory().getBeanDefinition("tempable"));*/
 
-        Tweet tweet = tweetService.creatEmptyTweet();
+        //Tweet tweet = tweetService.creatEmptyTweet();
 
         context.close();
 

@@ -10,7 +10,7 @@ public interface TweetService {
 
     List<Tweet> findAll();
     void addTweet(Tweet tweet);
-    Tweet createTweet(String tweetText, User user);
+    Tweet createTweet(User user, String tweetText);
     Tweet creatEmptyTweet();
 
 }

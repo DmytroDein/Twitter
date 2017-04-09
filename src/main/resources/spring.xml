@@ -8,18 +8,18 @@
 
 
     <context:annotation-config/>
-    <context:component-scan base-package="twitter.domain.services"/>
+    <context:component-scan base-package="twitter.domain"/>
     
-    <bean id = "TweeterRepository" class = "twitter.domain.repository.TweetRepositoryImpl" init-method="init" />
+    <!--<bean id = "TweeterRepository" class = "twitter.domain.repository.TweetRepositoryImpl" init-method="init" />-->
 
-    <bean id="User" class="twitter.domain.User">
+ <!--   <bean id="User" class="twitter.domain.User">
        <constructor-arg value="Douglas"/>
-    </bean>
+    </bean>-->
 
     <!--<bean name="temp" class="twitter.infrastructure.MyFactoryBean" />-->
 
 
-    <!--<bean class="twitter.infrastructure.BenchmarkBeanPostprocessor"/>-->
+    <bean class="twitter.infrastructure.BenchmarkBeanPostProcessor"/>
 
     <!--<bean class="twitter.infrastructure.MyBeanFactoryPostProcessor"/>-->
 
