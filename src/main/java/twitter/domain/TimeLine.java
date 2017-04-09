@@ -1,4 +1,4 @@
-package twitter;
+package twitter.domain;
 
 
 import java.util.ArrayList;

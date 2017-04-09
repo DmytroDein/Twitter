@@ -1,4 +1,4 @@
-package twitter;
+package twitter.domain;
 
 /**
  * Created by Dmytro_Deinichenko on 3/30/2017.

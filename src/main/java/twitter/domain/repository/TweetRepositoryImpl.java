@@ -1,12 +1,10 @@
-package twitter.repository;
+package twitter.domain.repository;
 
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
-import twitter.Tweet;
-import twitter.User;
-import twitter.infrastructure.Benchmark;
-import twitter.infrastructure.PostConstructAnnotation;
+import twitter.domain.Tweet;
+import twitter.infrastructure.annotations.Benchmark;
+import twitter.infrastructure.annotations.PostConstructAnnotation;
 
 import java.util.ArrayList;
 import java.util.List;

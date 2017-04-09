@@ -1,10 +1,13 @@
 package twitter;
 
 
-import twitter.infrastructure.*;
-import twitter.repository.TweetRepository;
-import twitter.repository.TweetRepositoryImpl;
-import twitter.services.TweetService;
+import twitter.domain.Tweet;
+import twitter.domain.User;
+import twitter.infrastructure.custom.ApplicationContext;
+import twitter.infrastructure.custom.Config;
+import twitter.infrastructure.custom.Context;
+import twitter.infrastructure.custom.JavaConfig;
+import twitter.domain.services.TweetService;
 
 public class AppRunner {
     public static void main(String[] args) throws Exception {

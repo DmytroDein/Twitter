@@ -1,8 +1,7 @@
-package twitter.repository;
+package twitter.domain.repository;
 
 
-import twitter.Tweet;
-import twitter.User;
+import twitter.domain.Tweet;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package twitter.infrastructure;
+package twitter.infrastructure.custom;
 
-/**
- * Created by Dmytro_Deinichenko on 3/30/2017.
- */
+import twitter.infrastructure.custom.Config;
+
+
 public class InitialContext {
     private Config config;
 

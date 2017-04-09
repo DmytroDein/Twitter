@@ -1,13 +1,12 @@
 package twitter;
 
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import twitter.infrastructure.Temp;
-import twitter.repository.TweetRepository;
-import twitter.services.TweetService;
+import twitter.domain.Tweet;
+import twitter.domain.User;
+import twitter.domain.repository.TweetRepository;
+import twitter.domain.services.TweetService;
 
 import java.util.Arrays;
 

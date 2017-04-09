@@ -1,4 +1,4 @@
-package twitter;
+package twitter.domain;
 
 
 public class User {

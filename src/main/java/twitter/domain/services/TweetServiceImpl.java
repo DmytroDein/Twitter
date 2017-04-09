@@ -1,4 +1,4 @@
-package twitter.services;
+package twitter.domain.services;
 
 
 import org.springframework.beans.BeansException;
@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import twitter.Tweet;
-import twitter.User;
-import twitter.infrastructure.Benchmark;
-import twitter.repository.TweetRepository;
-import twitter.repository.TweetRepositoryImpl;
+import twitter.domain.Tweet;
+import twitter.domain.User;
+import twitter.infrastructure.annotations.Benchmark;
+import twitter.domain.repository.TweetRepository;
 
 import java.util.List;
 

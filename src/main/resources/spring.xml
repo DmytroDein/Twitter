@@ -8,11 +8,11 @@
 
 
     <context:annotation-config/>
-    <context:component-scan base-package="twitter.services"/>
+    <context:component-scan base-package="twitter.domain.services"/>
     
-    <bean id = "TweeterRepository" class = "twitter.repository.TweetRepositoryImpl" init-method="init" />
+    <bean id = "TweeterRepository" class = "twitter.domain.repository.TweetRepositoryImpl" init-method="init" />
 
-    <bean id="User" class="twitter.User">
+    <bean id="User" class="twitter.domain.User">
        <constructor-arg value="Douglas"/>
     </bean>
 

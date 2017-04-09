@@ -1,8 +1,7 @@
-package twitter.infrastructure;
+package twitter.infrastructure.custom;
 
-import twitter.User;
-import twitter.repository.TweetRepositoryImpl;
-import twitter.services.TweetServiceImpl;
+import twitter.domain.repository.TweetRepositoryImpl;
+import twitter.domain.services.TweetServiceImpl;
 
 import java.util.HashMap;
 import java.util.Map;
