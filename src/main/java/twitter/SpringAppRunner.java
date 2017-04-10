@@ -57,7 +57,8 @@ public class SpringAppRunner {
 
         System.out.println(ctx2.getBeanFactory().getBeanDefinition("tempable"));*/
 
-        //Tweet tweet = tweetService.creatEmptyTweet();
+        /*Tweet tweet = tweetService.createEmptyTweet();
+        System.out.println("\nEmpty tweet by 'lookup': " + tweet.getClass().getName());*/
 
         context.close();
 

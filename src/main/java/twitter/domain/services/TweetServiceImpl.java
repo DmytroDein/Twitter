@@ -60,8 +60,8 @@ public class TweetServiceImpl implements TweetService, ApplicationContextAware{
         return (Tweet) serviceContext.getBean("tweet");
     }
 
-    //@Lookup("tweet")
-    public Tweet creatEmptyTweet(){
+    //@Lookup
+    public Tweet createEmptyTweet(){
         return null;
     }
 }

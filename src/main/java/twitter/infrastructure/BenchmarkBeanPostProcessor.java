@@ -14,11 +14,6 @@ import java.util.Arrays;
 public class BenchmarkBeanPostProcessor implements BeanPostProcessor{
     @Override
     public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
-        return bean;
-    }
-
-    @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Object resultBean = bean;
         Method[] methods = bean.getClass().getMethods();
         /*for(Method met: methods){
@@ -39,6 +34,11 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor{
 //        return bean;
         return resultBean;
 //        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        return bean;
     }
 
     private Object getBenchmarkProxyBean(Object bean) {

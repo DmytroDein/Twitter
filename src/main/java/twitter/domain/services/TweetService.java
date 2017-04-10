@@ -11,6 +11,6 @@ public interface TweetService {
     List<Tweet> findAll();
     void addTweet(Tweet tweet);
     Tweet createTweet(User user, String tweetText);
-//    Tweet creatEmptyTweet();
+    Tweet createEmptyTweet();
 
 }
