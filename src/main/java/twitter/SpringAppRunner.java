@@ -16,35 +16,29 @@ public class SpringAppRunner {
         ConfigurableApplicationContext childContext = new ClassPathXmlApplicationContext(new String[]{"service.xml"}, context);
 
         TweetService tweetService = (TweetService)childContext.getBean("tweetService");
-//        User user = new User("Douglas");
-        User user1 = (User) childContext.getBean("user", "Douglas");
-//        Tweet tweetFromUser1 = (Tweet) childContext.getBean("tweet", user1, "Some text #1 from user1!" );
+        User user1 = (User) context.getBean("user", "Douglas");
         Tweet tweetFromUser1 = tweetService.createTweet(user1, "Some text #1 from user1!" );
         tweetService.addTweet(tweetFromUser1);
-//        tweetFromUser1 = (Tweet) childContext.getBean("tweet", user1, "Some text #2 from user1!" );
         tweetFromUser1 = tweetService.createTweet(user1, "Some text #2 from user1!" );
         tweetService.addTweet(tweetFromUser1);
-//        tweetFromUser1 = (Tweet) childContext.getBean("tweet", user1, "Some text #3 from user1!" );
         tweetFromUser1 = tweetService.createTweet(user1, "Some text #3 from user1!" );
         tweetService.addTweet(tweetFromUser1);
 
         User user2 = (User) childContext.getBean("user", "Michael");
-//        Tweet tweetFromUser2 = (Tweet) childContext.getBean("tweet", user2, "Some text #1 from user2!" );
         Tweet tweetFromUser2 = tweetService.createTweet(user2, "Some text #1 from user2!" );
         tweetService.addTweet(tweetFromUser2);
-//        tweetFromUser2 = (Tweet) childContext.getBean("tweet", user2, "Some text #2 from user2!" );
         tweetFromUser2 = tweetService.createTweet(user2, "Some text #2 from user2!" );
         tweetService.addTweet(tweetFromUser2);
-//        tweetFromUser2 = (Tweet) childContext.getBean("tweet", user2, "Some text #3 from user2!" );
         tweetFromUser2 = tweetService.createTweet(user2, "Some text #3 from user2!" );
         tweetService.addTweet(tweetFromUser2);
 
+        System.out.println("\n---------------- List of tweets ------------------");
         tweetService.findAll().forEach(System.out::println);
 
-        System.out.println("------------- context -----------");
+        System.out.println("\n------------- context -----------");
         System.out.println(Arrays.toString(context.getBeanDefinitionNames()));
 
-        System.out.println("------------- childContext -----------");
+        System.out.println("\n------------- childContext -----------");
         System.out.println(Arrays.toString(childContext.getBeanDefinitionNames()));
 
         /*BeanDefinition beanDefinition = context.getBeanFactory().getBeanDefinition("TweeterRepository");

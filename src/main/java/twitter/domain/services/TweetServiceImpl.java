@@ -30,7 +30,7 @@ public class TweetServiceImpl implements TweetService, ApplicationContextAware{
     }
 
     @Override
-    @Benchmark(value = true)
+//    @Benchmark
     public List<Tweet> findAll() {
         return tweetRepository.findAll();
     }
@@ -46,9 +46,10 @@ public class TweetServiceImpl implements TweetService, ApplicationContextAware{
         this.serviceContext = applicationContext;
     }
 
-    @Benchmark
+    @Override
+    @Benchmark(value = true)
     public Tweet createTweet(User user, String tweetText){
-        System.out.println("Creating tweet...");
+        //System.out.println("Creating tweet...");
         Tweet tweet = createNewTweet();
         tweet.setUser(user);
         tweet.setText(tweetText);
@@ -56,7 +57,6 @@ public class TweetServiceImpl implements TweetService, ApplicationContextAware{
     }
 
     private Tweet createNewTweet() {
-//        throw new UnsupportedOperationException();
         return (Tweet) serviceContext.getBean("tweet");
     }
 
